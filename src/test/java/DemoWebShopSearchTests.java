@@ -1,9 +1,10 @@
-import com.codeborne.selenide.SelenideElement;
+import static com.codeborne.selenide.Condition.href;
+
 import io.restassured.http.Cookie;
 import io.restassured.http.Cookies;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-import java.util.stream.Collectors;
+
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static io.qameta.allure.Allure.step;
@@ -36,7 +37,7 @@ public class DemoWebShopSearchTests {
                     .extract().detailedCookies();
         });
 
-        step("Проверяем список товаров на странице 'Recently viewed products'", () -> {
+        step("Проверяем список просмотренных товаров на странице 'Recently viewed products'", () -> {
             Response response = given()
                     .cookies(cookies)
                     .when()
@@ -55,8 +56,8 @@ public class DemoWebShopSearchTests {
                 getWebDriver().manage().addCookie(toSeleniumCookie(cookie));
             }
             open("http://demowebshop.tricentis.com/recentlyviewedproducts/");
-            assertThat($$("h2.product-title a").stream().map(SelenideElement::getText).collect(Collectors.toList()))
-                    .containsExactlyInAnyOrder("Sunglasses", "Diamond Pave Earrings");
+            $("h2.product-title a").shouldHave(href("/sunglasses"));
+            $(".item-box").sibling(0).$("h2.product-title a").shouldHave(href("/diamond-pave-earrings"));
         });
     }
 
