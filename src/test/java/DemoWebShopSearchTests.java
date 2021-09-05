@@ -1,5 +1,4 @@
 import static com.codeborne.selenide.Condition.href;
-
 import io.restassured.http.Cookie;
 import io.restassured.http.Cookies;
 import io.restassured.response.Response;
